@@ -4,8 +4,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-@Getter
-@NoArgsConstructor
+
 @Entity
 @Table(name = "CartItems")
 public class CartItem {
@@ -14,12 +13,32 @@ public class CartItem {
     private int cartItemId;
     @Column
     private int quantity;
+
+    public CartItem() {
+    }
+
+    public int getCartItemId() {
+        return cartItemId;
+    }
+
+    public int getQuantity() {
+        return quantity;
+    }
+
+    public Cart getCart() {
+        return cart;
+    }
+
+    public Book getBook() {
+        return book;
+    }
+
     @ManyToOne
-    @JoinColumn(name = "cart_id", nullable = false)
+    @JoinColumn(name = "cart_id")
     private Cart cart;
 
     @ManyToOne
-    @JoinColumn(name = "book_id", nullable = false)
+    @JoinColumn(name = "book_id")
     private Book book;
 
     public CartItem(Cart cart, Book book) {

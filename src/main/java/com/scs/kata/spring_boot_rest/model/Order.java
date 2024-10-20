@@ -1,7 +1,6 @@
 package com.scs.kata.spring_boot_rest.model;
 
 import com.scs.kata.spring_boot_rest.exception.InvalidInputException;
-import com.scs.kata.spring_boot_rest.model.enums.OrderStatus;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -11,11 +10,37 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-@Getter
+
 @Entity
-@NoArgsConstructor
 @Table(name = "BookOrder")
 public class Order {
+    public Order() {
+    }
+
+    public int getOrderId() {
+        return orderId;
+    }
+
+    public BigDecimal getTotalPrice() {
+        return totalPrice;
+    }
+
+    public OrderStatus getStatus() {
+        return status;
+    }
+
+    public Date getOrderDate() {
+        return orderDate;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public List<OrderItem> getOrderItems() {
+        return orderItems;
+    }
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int orderId;
@@ -31,7 +56,7 @@ public class Order {
     private Date orderDate;
 
     @ManyToOne
-    @JoinColumn(name = "user_id", nullable = false)
+    @JoinColumn(name = "user_id")
     private User user;
 
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)

@@ -8,8 +8,6 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 
-@Getter
-@NoArgsConstructor
 @Entity
 @Table(name = "Book")
 public class Book {
@@ -20,8 +18,27 @@ public class Book {
     @Column(name = "bookTitle")
     private String bookTitle;
 
+    public Book() {
+    }
+
     @Column(name = "authorName")
     private String authorName;
+
+    public int getBookId() {
+        return bookId;
+    }
+
+    public String getBookTitle() {
+        return bookTitle;
+    }
+
+    public String getAuthorName() {
+        return authorName;
+    }
+
+    public BigDecimal getBookPrice() {
+        return bookPrice;
+    }
 
     @Column(name = "bookPrice")
     private BigDecimal bookPrice;

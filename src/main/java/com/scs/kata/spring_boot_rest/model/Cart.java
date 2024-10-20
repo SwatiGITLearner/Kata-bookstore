@@ -1,8 +1,6 @@
 package com.scs.kata.spring_boot_rest.model;
 
-import com.scs.kata.spring_boot_rest.model.enums.*;
 import jakarta.persistence.*;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
@@ -10,8 +8,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-@Getter
-@NoArgsConstructor
+
 @Entity
 @Table(name = "Cart")
 public class Cart {
@@ -23,8 +20,27 @@ public class Cart {
     @Column
     private BigDecimal totalAmount;
 
+    public Cart() {
+    }
+
+    public int getCartId() {
+        return cartId;
+    }
+
+    public BigDecimal getTotalAmount() {
+        return totalAmount;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public List<CartItem> getCartItems() {
+        return cartItems;
+    }
+
     @ManyToOne
-    @JoinColumn(name = "user_id", nullable = false)
+    @JoinColumn(name = "user_id")
     private User user;
 
     @OneToMany(mappedBy = "cart", cascade = CascadeType.ALL, orphanRemoval = true)
