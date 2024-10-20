@@ -1,13 +1,10 @@
 package com.scs.kata.spring_boot_rest.model.api;
 
 
-import lombok.Getter;
-import lombok.Setter;
-
 import java.math.BigDecimal;
 
 
-public class UpdateShoppingCartResponse {
+public class ChangeCartResponse {
     private BigDecimal totalPrice;
     private String ErrorMessage;
 

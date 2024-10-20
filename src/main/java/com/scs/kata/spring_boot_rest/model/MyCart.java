@@ -1,7 +1,6 @@
 package com.scs.kata.spring_boot_rest.model;
 
 import jakarta.persistence.*;
-import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -11,7 +10,7 @@ import java.util.List;
 
 @Entity
 @Table(name = "Carts")
-public class Cart {
+public class MyCart {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -20,7 +19,7 @@ public class Cart {
     @Column
     private BigDecimal totalAmount;
 
-    public Cart() {
+    public MyCart() {
     }
 
     public int getCartId() {
@@ -43,10 +42,10 @@ public class Cart {
     @JoinColumn(name = "user_id")
     private User user;
 
-    @OneToMany(mappedBy = "cart", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "myCart", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<CartItem> cartItems;
 
-    public Cart(User user) {
+    public MyCart(User user) {
         this.totalAmount = BigDecimal.ZERO;
         this.user=user;
     }

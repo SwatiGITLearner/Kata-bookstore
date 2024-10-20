@@ -1,45 +1,44 @@
-/*package com.scs.kata.spring_boot_rest.service;
+package com.scs.kata.spring_boot_rest.serviceImpl;
 
 import com.scs.kata.spring_boot_rest.exception.InvalidInputException;
-import com.scs.kata.spring_boot_rest.model.Cart;
+import com.scs.kata.spring_boot_rest.model.MyCart;
 import com.scs.kata.spring_boot_rest.model.Order;
 import com.scs.kata.spring_boot_rest.model.User;
+import com.scs.kata.spring_boot_rest.model.api.PlaceOrderRequest;
+import com.scs.kata.spring_boot_rest.model.api.PlaceOrderResponse;
 import com.scs.kata.spring_boot_rest.repository.ICartRepository;
 import com.scs.kata.spring_boot_rest.repository.IOrderRepository;
-import com.scs.kata.spring_boot_rest.repository.IUserRepository;
+import com.scs.kata.spring_boot_rest.service.IOrderService;
 import jakarta.transaction.Transactional;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
-public class OrderServiceImpl implements  IOrderService{
+public class OrderServiceImpl implements IOrderService {
     @Autowired
     IOrderRepository orderRepository;
 
-    @Autowired
-    IUserRepository userRepository;
+//    @Autowired
+//    IUserRepository userRepository;
 
     @Autowired
     ICartRepository cartRepository;
 
     /* Places order with given cart items, deletes existing cart */
-  /*  @Override
+  @Override
     @Transactional
     public PlaceOrderResponse placeOrder(PlaceOrderRequest placeOrderRequest) {
         //
+
         PlaceOrderResponse placeOrderResponse = new PlaceOrderResponse();
         try {
-            Cart cart = cartRepository.findById(placeOrderRequest.getCartId())
+            MyCart myCart = cartRepository.findById(placeOrderRequest.getCartId())
                     .orElseThrow(() -> new InvalidInputException("Cart not found"));
-
-            User user = userRepository.findById(placeOrderRequest.getUserId())
-                    .orElseThrow(() -> new InvalidInputException("User not found"));
-
-            Order order = cart.createOrder(user);
+            User user = new User();
+            user.setId(123);
+            Order order = myCart.createOrder(user);
             orderRepository.save(order);
-            cartRepository.delete(cart);
+            cartRepository.delete(myCart);
             return placeOrderResponse;
         } catch (InvalidInputException ex) {
             placeOrderResponse.setErrorMessage(ex.getMessage());
@@ -50,5 +49,3 @@ public class OrderServiceImpl implements  IOrderService{
         }
     }
 }
-
-*/

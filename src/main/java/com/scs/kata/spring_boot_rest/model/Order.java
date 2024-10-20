@@ -2,9 +2,6 @@ package com.scs.kata.spring_boot_rest.model;
 
 import com.scs.kata.spring_boot_rest.exception.InvalidInputException;
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;

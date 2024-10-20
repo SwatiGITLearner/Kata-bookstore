@@ -1,18 +1,19 @@
 package com.scs.kata.spring_boot_rest.service;
 
-import com.scs.kata.spring_boot_rest.model.api.CreateCartRequest;
-import com.scs.kata.spring_boot_rest.model.api.CreateCartResponse;
-import com.scs.kata.spring_boot_rest.model.api.GetShoppingCartResponse;
+import com.scs.kata.spring_boot_rest.model.api.AddCartRequest;
+import com.scs.kata.spring_boot_rest.model.api.AddCartResponse;
+import com.scs.kata.spring_boot_rest.model.api.ChangeCartResponse;
+import com.scs.kata.spring_boot_rest.model.api.RetrieveCartResponse;
 
 public interface ICartService {
 
-    GetShoppingCartResponse getCart(int userId);
+    RetrieveCartResponse getCart(int userId);
 
-    CreateCartResponse createCart(CreateCartRequest createCartRequest);
+    AddCartResponse addCart(AddCartRequest addCartRequest);
 //
-//    UpdateShoppingCartResponse updateBookQuantity(int cartId, int bookId, int quantity);
-//
-//    UpdateShoppingCartResponse removeCartItem(int cartId, int bookId);
-//
-//    UpdateShoppingCartResponse deleteCart(int cartId);
+    ChangeCartResponse updateBookQuantity(int cartId, int bookId, int quantity);
+
+    ChangeCartResponse deleteItemFromCart(int cartId, int bookId) throws Exception;
+
+    ChangeCartResponse deleteCart(int cartId);
 }

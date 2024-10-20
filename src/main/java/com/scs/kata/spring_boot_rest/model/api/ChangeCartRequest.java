@@ -5,7 +5,7 @@ package com.scs.kata.spring_boot_rest.model.api;
 import java.math.BigDecimal;
 
 
-public class UpdateShoppingCartRequest {
+public class ChangeCartRequest {
     private int cartId;
     private int bookId;
 

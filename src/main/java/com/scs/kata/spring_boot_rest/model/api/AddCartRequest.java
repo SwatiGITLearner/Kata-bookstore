@@ -1,14 +1,11 @@
 package com.scs.kata.spring_boot_rest.model.api;
 
 
-import lombok.Getter;
-import lombok.Setter;
-
 import java.math.BigDecimal;
 import java.util.List;
 
 
-public class CreateCartRequest {
+public class AddCartRequest {
     private int userId;
     private BigDecimal totalPrice;
 

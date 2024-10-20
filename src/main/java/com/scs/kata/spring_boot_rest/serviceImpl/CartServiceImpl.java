@@ -2,17 +2,20 @@ package com.scs.kata.spring_boot_rest.serviceImpl;
 
 import com.scs.kata.spring_boot_rest.exception.InvalidInputException;
 import com.scs.kata.spring_boot_rest.model.Book;
-import com.scs.kata.spring_boot_rest.model.Cart;
+import com.scs.kata.spring_boot_rest.model.MyCart;
 import com.scs.kata.spring_boot_rest.model.User;
-import com.scs.kata.spring_boot_rest.model.api.CreateCartRequest;
-import com.scs.kata.spring_boot_rest.model.api.CreateCartResponse;
-import com.scs.kata.spring_boot_rest.model.api.GetShoppingCartResponse;
+import com.scs.kata.spring_boot_rest.model.api.AddCartRequest;
+import com.scs.kata.spring_boot_rest.model.api.AddCartResponse;
+import com.scs.kata.spring_boot_rest.model.api.ChangeCartResponse;
+import com.scs.kata.spring_boot_rest.model.api.RetrieveCartResponse;
 import com.scs.kata.spring_boot_rest.repository.IBookRepository;
 import com.scs.kata.spring_boot_rest.repository.ICartRepository;
 import com.scs.kata.spring_boot_rest.service.ICartService;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.math.BigDecimal;
 
 @Service
 public class CartServiceImpl implements ICartService {
@@ -29,106 +32,97 @@ public class CartServiceImpl implements ICartService {
     private org.modelmapper.ModelMapper modelMapper;
 
     @Override
-    /* Returns existing cart of user */
-  public GetShoppingCartResponse getCart(int userId) {
-        Cart cart = cartRepository.findByUserId(userId);
-        if (cart == null) {
-            return null;
+    public RetrieveCartResponse getCart(int userId) {
+        MyCart myCart = cartRepository.findByUserId(userId);
+        if (myCart == null) {
+            return null; // No cart found for the specified user
         }
-        return modelMapper.map(cart, GetShoppingCartResponse.class);
+        return modelMapper.map(myCart, RetrieveCartResponse.class);
     }
 
-//    /* Creates new cart for user, returns cartId */
     @Override
     @Transactional
-    public CreateCartResponse createCart(CreateCartRequest createCartRequest) {
-        CreateCartResponse createCartResponse = new CreateCartResponse();
+    public AddCartResponse addCart(AddCartRequest addCartRequest) {
+        AddCartResponse addCartResponse = new AddCartResponse();
         try {
-
             User user = new User();
             user.setId(123);
 
-            Cart optionalShoppingCart = cartRepository.findByUserId(createCartRequest.getUserId());
-            if (optionalShoppingCart != null) {
-                throw new InvalidInputException("Shopping cart already exists");
+            MyCart existingMyCart = cartRepository.findByUserId(addCartRequest.getUserId());
+            if (existingMyCart != null) {
+                throw new InvalidInputException("A shopping cart already exists for this user.");
             }
-            Book book = bookRepository.findById(createCartRequest.getShoppingCartItems().get(0).getBookId())
-                    .orElseThrow(() -> new InvalidInputException("book not found"));
 
+            Book book = bookRepository.findById(addCartRequest.getShoppingCartItems().get(0).getBookId())
+                    .orElseThrow(() -> new InvalidInputException("The specified book could not be found."));
 
-
-            Cart cart = new Cart(user);
-            cart.addBook(book, 1);
-            var result = cartRepository.save(cart);
-            createCartResponse.setCartId(result.getCartId());
-            return createCartResponse;
+            MyCart myCart = new MyCart(user);
+            myCart.addBook(book, 1);
+            MyCart savedMyCart = cartRepository.save(myCart);
+            addCartResponse.setCartId(savedMyCart.getCartId());
+            return addCartResponse;
         } catch (InvalidInputException ex) {
-            createCartResponse.setErrorMessage(ex.getMessage());
-            return createCartResponse;
+            addCartResponse.setErrorMessage(ex.getMessage());
+            return addCartResponse;
         } catch (Exception ex) {
-            throw ex;
+            throw ex; // Rethrow unexpected exceptions
         }
     }
 
-//    /* Update book quantity of the cart item, calculates new price */
-//    /*@Override
-//    public UpdateShoppingCartResponse updateBookQuantity(int cartId, int bookId, int quantity) {
-//        //
-//        UpdateShoppingCartResponse updateShoppingCartResponse = new UpdateShoppingCartResponse();
-//        try {
-//            Cart existingCart = cartRepository.findById(cartId)
-//                    .orElseThrow(() -> new InvalidInputException("Cart not found"));
-//            Book book = bookRepository.findById(bookId)
-//                    .orElseThrow(() -> new InvalidInputException("book not found"));
-//
-//            var modifiedCartPrice =  existingCart.addBook(book,quantity);
-//            cartRepository.save(existingCart);
-//            updateShoppingCartResponse.setTotalPrice(modifiedCartPrice);
-//            return updateShoppingCartResponse;
-//        } catch (InvalidInputException ex) {
-//            updateShoppingCartResponse.setErrorMessage(ex.getMessage());
-//            return updateShoppingCartResponse;
-//        } catch (Exception ex) {
-//            throw ex;
-//        }
-//    }
+    @Override
+    public ChangeCartResponse updateBookQuantity(int cartId, int bookId, int quantity) {
+        ChangeCartResponse changeCartResponse = new ChangeCartResponse();
+        try {
+            MyCart existingMyCart = cartRepository.findById(cartId)
+                    .orElseThrow(() -> new InvalidInputException("The specified cart was not found."));
+            Book book = bookRepository.findById(bookId)
+                    .orElseThrow(() -> new InvalidInputException("The specified book was not found."));
 
-//    /* Remove book from cart items table */
-//    /*@Override
-//    public UpdateShoppingCartResponse removeCartItem(int cartId, int bookId) throws Exception{
-//        UpdateShoppingCartResponse updateShoppingCartResponse = new UpdateShoppingCartResponse();
-//        try {
-//            Cart cart = cartRepository.findById(cartId)
-//                    .orElseThrow(() -> new InvalidInputException("Cart not found"));
-//            Book book = bookRepository.findById(bookId)
-//                    .orElseThrow(() -> new InvalidInputException("book not found"));
-//
-//            var modifiedCartPrice = cart.removeBook(book);
-//            updateShoppingCartResponse.setTotalPrice(modifiedCartPrice);
-//            return updateShoppingCartResponse;
-//        } catch (InvalidInputException ex) {
-//            updateShoppingCartResponse.setErrorMessage(ex.getMessage());
-//            return updateShoppingCartResponse;
-//        } catch (Exception ex) {
-//            throw ex;
-//        }
-//    }
+            BigDecimal modifiedCartPrice = existingMyCart.addBook(book, quantity);
+            cartRepository.save(existingMyCart);
+            changeCartResponse.setTotalPrice(modifiedCartPrice);
+            return changeCartResponse;
+        } catch (InvalidInputException ex) {
+            changeCartResponse.setErrorMessage(ex.getMessage());
+            return changeCartResponse;
+        } catch (Exception ex) {
+            throw ex; // Rethrow unexpected exceptions
+        }
+    }
 
-//    /* Deletes cart */
-//   /* @Override
-//    public UpdateShoppingCartResponse deleteCart(int cartId) {
-//        UpdateShoppingCartResponse updateShoppingCartResponse = new UpdateShoppingCartResponse();
-//        try {
-//            Cart cart = cartRepository.findById(cartId)
-//                    .orElseThrow(() -> new InvalidInputException("Cart not found"));
-//
-//            cartRepository.delete(cart);
-//            return updateShoppingCartResponse;
-//        } catch (InvalidInputException ex) {
-//            updateShoppingCartResponse.setErrorMessage(ex.getMessage());
-//            return updateShoppingCartResponse;
-//        } catch (Exception ex) {
-//            throw ex;
-//        }
-//    }
+    @Override
+    public ChangeCartResponse deleteItemFromCart(int cartId, int bookId) throws Exception {
+        ChangeCartResponse changeCartResponse = new ChangeCartResponse();
+        try {
+            MyCart myCart = cartRepository.findById(cartId)
+                    .orElseThrow(() -> new InvalidInputException("The specified cart was not found."));
+            Book book = bookRepository.findById(bookId)
+                    .orElseThrow(() -> new InvalidInputException("The specified book was not found."));
+
+            BigDecimal modifiedCartPrice = myCart.removeBook(book);
+            changeCartResponse.setTotalPrice(modifiedCartPrice);
+            return changeCartResponse;
+        } catch (InvalidInputException ex) {
+            changeCartResponse.setErrorMessage(ex.getMessage());
+            return changeCartResponse;
+        } catch (Exception ex) {
+            throw ex; // Rethrow unexpected exceptions
+        }
+    }
+
+    public ChangeCartResponse deleteCart(int cartId) {
+        ChangeCartResponse changeCartResponse = new ChangeCartResponse();
+        try {
+            MyCart myCart = cartRepository.findById(cartId)
+                    .orElseThrow(() -> new InvalidInputException("The specified cart was not found."));
+
+            cartRepository.delete(myCart);
+            return changeCartResponse;
+        } catch (InvalidInputException ex) {
+            changeCartResponse.setErrorMessage(ex.getMessage());
+            return changeCartResponse;
+        } catch (Exception ex) {
+            throw ex; // Rethrow unexpected exceptions
+        }
+    }
 }

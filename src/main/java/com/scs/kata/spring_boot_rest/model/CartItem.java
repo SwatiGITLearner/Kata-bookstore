@@ -1,8 +1,6 @@
 package com.scs.kata.spring_boot_rest.model;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
 
 
 @Entity
@@ -25,8 +23,8 @@ public class CartItem {
         return quantity;
     }
 
-    public Cart getCart() {
-        return cart;
+    public MyCart getCart() {
+        return myCart;
     }
 
     public Book getBook() {
@@ -35,14 +33,14 @@ public class CartItem {
 
     @ManyToOne
     @JoinColumn(name = "cart_id")
-    private Cart cart;
+    private MyCart myCart;
 
     @ManyToOne
     @JoinColumn(name = "book_id")
     private Book book;
 
-    public CartItem(Cart cart, Book book) {
-        this.cart = cart;
+    public CartItem(MyCart myCart, Book book) {
+        this.myCart = myCart;
         this.book = book;
     }
 
