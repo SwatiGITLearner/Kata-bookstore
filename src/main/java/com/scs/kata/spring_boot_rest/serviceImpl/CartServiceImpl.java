@@ -1,10 +1,16 @@
 package com.scs.kata.spring_boot_rest.serviceImpl;
 
+import com.scs.kata.spring_boot_rest.exception.InvalidInputException;
+import com.scs.kata.spring_boot_rest.model.Book;
 import com.scs.kata.spring_boot_rest.model.Cart;
+import com.scs.kata.spring_boot_rest.model.User;
+import com.scs.kata.spring_boot_rest.model.api.CreateCartRequest;
+import com.scs.kata.spring_boot_rest.model.api.CreateCartResponse;
 import com.scs.kata.spring_boot_rest.model.api.GetShoppingCartResponse;
 import com.scs.kata.spring_boot_rest.repository.IBookRepository;
 import com.scs.kata.spring_boot_rest.repository.ICartRepository;
 import com.scs.kata.spring_boot_rest.service.ICartService;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -33,36 +39,36 @@ public class CartServiceImpl implements ICartService {
     }
 
 //    /* Creates new cart for user, returns cartId */
-//    /*@Override
-//    @Transactional
-//    public CreateCartResponse createCart(CreateCartRequest createCartRequest) {
-//        CreateCartResponse createCartResponse = new CreateCartResponse();
-//        try {
-//
-//            User user = userRepository.findById(createCartRequest.getUserId())
-//                    .orElseThrow(() -> new InvalidInputException("User not found"));
-//
-//            Cart optionalShoppingCart = cartRepository.findByUserId(createCartRequest.getUserId());
-//            if (optionalShoppingCart != null) {
-//                throw new InvalidInputException("Shopping cart already exists");
-//            }
-//            Book book = bookRepository.findById(createCartRequest.getShoppingCartItems().get(0).getBookId())
-//                    .orElseThrow(() -> new InvalidInputException("book not found"));
-//
-//
-//
-//            Cart cart = new Cart(user);
-//            cart.addBook(book, 1);
-//            var result = cartRepository.save(cart);
-//            createCartResponse.setCartId(result.getId());
-//            return createCartResponse;
-//        } catch (InvalidInputException ex) {
-//            createCartResponse.setErrorMessage(ex.getMessage());
-//            return createCartResponse;
-//        } catch (Exception ex) {
-//            throw ex;
-//        }
-//    }
+    @Override
+    @Transactional
+    public CreateCartResponse createCart(CreateCartRequest createCartRequest) {
+        CreateCartResponse createCartResponse = new CreateCartResponse();
+        try {
+
+            User user = new User();
+            user.setId(123);
+
+            Cart optionalShoppingCart = cartRepository.findByUserId(createCartRequest.getUserId());
+            if (optionalShoppingCart != null) {
+                throw new InvalidInputException("Shopping cart already exists");
+            }
+            Book book = bookRepository.findById(createCartRequest.getShoppingCartItems().get(0).getBookId())
+                    .orElseThrow(() -> new InvalidInputException("book not found"));
+
+
+
+            Cart cart = new Cart(user);
+            cart.addBook(book, 1);
+            var result = cartRepository.save(cart);
+            createCartResponse.setCartId(result.getCartId());
+            return createCartResponse;
+        } catch (InvalidInputException ex) {
+            createCartResponse.setErrorMessage(ex.getMessage());
+            return createCartResponse;
+        } catch (Exception ex) {
+            throw ex;
+        }
+    }
 
 //    /* Update book quantity of the cart item, calculates new price */
 //    /*@Override

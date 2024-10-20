@@ -1,12 +1,14 @@
 package com.scs.kata.spring_boot_rest.service;
 
+import com.scs.kata.spring_boot_rest.model.api.CreateCartRequest;
+import com.scs.kata.spring_boot_rest.model.api.CreateCartResponse;
 import com.scs.kata.spring_boot_rest.model.api.GetShoppingCartResponse;
 
 public interface ICartService {
 
     GetShoppingCartResponse getCart(int userId);
 
-//    CreateCartResponse createCart(CreateCartRequest createCartRequest);
+    CreateCartResponse createCart(CreateCartRequest createCartRequest);
 //
 //    UpdateShoppingCartResponse updateBookQuantity(int cartId, int bookId, int quantity);
 //

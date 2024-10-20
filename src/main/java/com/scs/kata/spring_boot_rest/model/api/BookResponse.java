@@ -6,11 +6,37 @@ import lombok.Setter;
 import java.io.Serializable;
 import java.math.BigDecimal;
 
-@Getter
-@Setter
+
 public class BookResponse implements Serializable {
     private int id;
     private String title;
-    private BigDecimal unitPrice;
-    private String genres;
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+
+    public BigDecimal getBookPrice() {
+        return bookPrice;
+    }
+
+    public void setBookPrice(BigDecimal bookPrice) {
+        this.bookPrice = bookPrice;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+
+
+    private BigDecimal bookPrice;
 }

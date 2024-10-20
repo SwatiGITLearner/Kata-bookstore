@@ -6,9 +6,24 @@ import lombok.Setter;
 
 import java.math.BigDecimal;
 
-@Getter
-@Setter
+
 public class UpdateShoppingCartResponse {
     private BigDecimal totalPrice;
     private String ErrorMessage;
+
+    public BigDecimal getTotalPrice() {
+        return totalPrice;
+    }
+
+    public void setTotalPrice(BigDecimal totalPrice) {
+        this.totalPrice = totalPrice;
+    }
+
+    public String getErrorMessage() {
+        return ErrorMessage;
+    }
+
+    public void setErrorMessage(String errorMessage) {
+        ErrorMessage = errorMessage;
+    }
 }

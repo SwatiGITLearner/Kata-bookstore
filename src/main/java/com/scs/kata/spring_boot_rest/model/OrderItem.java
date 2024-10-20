@@ -6,7 +6,7 @@ import lombok.NoArgsConstructor;
 
 
 @Entity
-@Table(name = "OrderItem")
+@Table(name = "OrderItems")
 public class OrderItem {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

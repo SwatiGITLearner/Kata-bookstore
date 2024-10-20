@@ -2,6 +2,8 @@ package com.scs.kata.spring_boot_rest.controller;
 
 
 //import com.scs.kata.spring_boot_rest.mapper.ModelMapper;
+import com.scs.kata.spring_boot_rest.model.api.CreateCartRequest;
+import com.scs.kata.spring_boot_rest.model.api.CreateCartResponse;
 import com.scs.kata.spring_boot_rest.model.api.GetShoppingCartResponse;
 import com.scs.kata.spring_boot_rest.service.ICartService;
 import org.modelmapper.ModelMapper;
@@ -11,7 +13,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import static org.springframework.http.HttpStatus.CREATED;
-import static org.springframework.http.HttpStatus.OK;
 
 @RestController
 @RequestMapping("/v1/carts")
@@ -31,14 +32,14 @@ public class CartController {
         return ResponseEntity.ok(result);
     }
 
-//   @PostMapping("create")
-//    public ResponseEntity<CreateCartResponse> createCart(@RequestBody CreateCartRequest createCartRequest) {
-//        var result = cartService.createCart(createCartRequest);
-//        if (result.getErrorMessage() != null) {
-//            return ResponseEntity.status(HttpStatus.OK).body(result);
-//        }
-//        return new ResponseEntity(result, CREATED);
-//    }
+   @PostMapping("create")
+    public ResponseEntity<CreateCartResponse> generateNewCartOrder(@RequestBody CreateCartRequest createCartRequest) {
+        var result = cartService.createCart(createCartRequest);
+        if (result.getErrorMessage() != null) {
+            return ResponseEntity.status(HttpStatus.OK).body(result);
+        }
+        return new ResponseEntity(result, CREATED);
+    }
 //
 //    @PostMapping("update")
 //    public ResponseEntity<UpdateShoppingCartResponse> updateShoppingCart(@RequestBody UpdateShoppingCartRequest updateShoppingCartRequest) {
