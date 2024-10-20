@@ -11,6 +11,17 @@ public class BookResponse implements Serializable {
     private int id;
     private String title;
 
+    public String getAuthorName() {
+        return authorName;
+    }
+
+    public void setAuthorName(String authorName) {
+        this.authorName = authorName;
+    }
+
+    private String authorName;
+    private BigDecimal bookPrice;
+
     public void setId(int id) {
         this.id = id;
     }
@@ -36,7 +47,4 @@ public class BookResponse implements Serializable {
         return title;
     }
 
-
-
-    private BigDecimal bookPrice;
 }

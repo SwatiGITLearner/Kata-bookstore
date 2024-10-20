@@ -12,6 +12,10 @@ import java.util.List;
 @Table(name = "Carts")
 public class MyCart {
 
+    public void setCartId(int cartId) {
+        this.cartId = cartId;
+    }
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int cartId;
@@ -55,13 +59,6 @@ public class MyCart {
         this.totalAmount = cartItems.stream()
                 .map(x -> BigDecimal.valueOf(x.getQuantity()).multiply(x.getBook().getBookPrice()))
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
-    }
-
-  public void addCartItem(CartItem cartItem) {
-        if (this.cartItems == null)
-            this.cartItems = new ArrayList<>();
-        this.cartItems.add(cartItem);
-
     }
 
     public BigDecimal addBook(Book book, int quantity) {

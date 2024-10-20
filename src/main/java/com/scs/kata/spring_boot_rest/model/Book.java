@@ -11,6 +11,10 @@ import java.time.LocalDateTime;
 @Entity
 @Table(name = "Books")
 public class Book {
+    public void setBookId(int bookId) {
+        this.bookId = bookId;
+    }
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int bookId;

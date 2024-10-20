@@ -46,7 +46,7 @@ public class CartServiceImpl implements ICartService {
         AddCartResponse addCartResponse = new AddCartResponse();
         try {
             User user = new User();
-            user.setId(123);
+            user.setId(1);
 
             MyCart existingMyCart = cartRepository.findByUserId(addCartRequest.getUserId());
             if (existingMyCart != null) {
@@ -101,6 +101,7 @@ public class CartServiceImpl implements ICartService {
 
             BigDecimal modifiedCartPrice = myCart.removeBook(book);
             changeCartResponse.setTotalPrice(modifiedCartPrice);
+            cartRepository.save(myCart);
             return changeCartResponse;
         } catch (InvalidInputException ex) {
             changeCartResponse.setErrorMessage(ex.getMessage());

@@ -35,7 +35,7 @@ public class OrderServiceImpl implements IOrderService {
             MyCart myCart = cartRepository.findById(placeOrderRequest.getCartId())
                     .orElseThrow(() -> new InvalidInputException("Cart not found"));
             User user = new User();
-            user.setId(123);
+            user.setId(1);
             Order order = myCart.createOrder(user);
             orderRepository.save(order);
             cartRepository.delete(myCart);

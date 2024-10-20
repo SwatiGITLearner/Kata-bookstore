@@ -1,8 +1,9 @@
-package com.scs.kata.spring_boot_rest.service;
+package com.scs.kata.spring_boot_rest.serviceImpl;
 
 import com.scs.kata.spring_boot_rest.model.Book;
 import com.scs.kata.spring_boot_rest.repository.IBookRepository;
 import com.scs.kata.spring_boot_rest.repository.IPagingRepository;
+import com.scs.kata.spring_boot_rest.service.IBookService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;

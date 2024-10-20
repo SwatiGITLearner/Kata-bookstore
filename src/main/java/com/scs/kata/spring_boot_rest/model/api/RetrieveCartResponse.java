@@ -7,7 +7,7 @@ import java.util.List;
 public class RetrieveCartResponse implements Serializable {
     private int cartId;
     private BigDecimal totalPrice;
-    private List<RetrieveCartItemResponse> cartItemResponses;
+    private List<RetrieveCartItemResponse> cartItems;
 
     public int getCartId() {
         return cartId;
@@ -25,11 +25,11 @@ public class RetrieveCartResponse implements Serializable {
         this.totalPrice = totalPrice;
     }
 
-    public List<RetrieveCartItemResponse> getCartItemResponses() {
-        return cartItemResponses;
+    public List<RetrieveCartItemResponse> getCartItems() {
+        return cartItems;
     }
 
-    public void setCartItemResponses(List<RetrieveCartItemResponse> cartItemResponses) {
-        this.cartItemResponses = cartItemResponses;
+    public void setCartItems(List<RetrieveCartItemResponse> cartItems) {
+        this.cartItems = cartItems;
     }
 }

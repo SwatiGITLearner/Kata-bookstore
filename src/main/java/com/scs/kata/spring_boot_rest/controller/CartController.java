@@ -1,7 +1,5 @@
 package com.scs.kata.spring_boot_rest.controller;
 
-
-//import com.scs.kata.spring_boot_rest.mapper.ModelMapper;
 import com.scs.kata.spring_boot_rest.model.api.*;
 import com.scs.kata.spring_boot_rest.service.ICartService;
 import org.modelmapper.ModelMapper;
@@ -13,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import static org.springframework.http.HttpStatus.CREATED;
 import static org.springframework.http.HttpStatus.OK;
 
+@CrossOrigin
 @RestController
 @RequestMapping("/v1/carts")
 public class CartController {
